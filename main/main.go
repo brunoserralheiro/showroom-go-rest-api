@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -22,7 +23,7 @@ func check(err error) {
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", HomeHandler)
-	r.HandleFunc("/api/v1/Upload", GetProducts).Methods("POST")
+	r.HandleFunc("/api/v1/upload", GetProducts).Methods("POST")
 	r.HandleFunc("/api/v1/products", GetProducts).Methods("GET")
 	r.HandleFunc("/api/v1/product/{id}", GetProduct).Methods("GET")
 	r.HandleFunc("/api/v1/products/{id}", NewProduct).Methods("POST")
@@ -33,10 +34,8 @@ func main() {
 } // end main
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("HomeHandler")
-	vars := mux.Vars(r)
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Product: %v\n", vars["product"])
+	log.Printf("HomeHandler")
+
 }
 
 func GetProducts(w http.ResponseWriter, r *http.Request) {
@@ -74,9 +73,6 @@ func GetProduct(w http.ResponseWriter, r *http.Request) {
 }
 func NewProduct(w http.ResponseWriter, r *http.Request) {
 
-	vars := mux.Vars(r)
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Product: %v\n", vars["product"])
 }
 
 //@todo organize packets and files...
@@ -111,4 +107,5 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	check(err)
 	tempFile.Write(fileBytes)
 	// return whether this is successful
+
 }
